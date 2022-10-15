@@ -93,7 +93,7 @@ module.exports.login = async (req, res, next) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       sameSite: 'none',
-      //secure: true,
+      secure: true,
     });
     return res.status(200).send({ data: user.toJSON() });
   } catch (err) {
