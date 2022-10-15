@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-//const cors = require('cors');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const userRoutes = require('./routes/user');
 const movieRoutes = require('./routes/movie');
@@ -19,12 +19,18 @@ const { PORT = 4000 } = process.env;
 
 const app = express();
 
-// app.use(
-//   cors({
-//     origin: ['https://anastasiavlzh.nomoredomains.sbs'],
-//     credentials: true,
-//   }),
-// );
+const ALLOW_ORIGIN = [
+  'http://localhost:4000',
+  'http://api.anastasiavlzh-diploma.nomoredomains.icu/',
+  'https://api.anastasiavlzh-diploma.nomoredomains.icu/',
+];
+
+app.use(
+  cors({
+    origin: ALLOW_ORIGIN,
+    credentials: true,
+  }),
+);
 
 app.use(cookieParser());
 

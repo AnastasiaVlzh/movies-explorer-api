@@ -7,7 +7,7 @@ const ServerError = require('../errors/server-err');
 const AuthError = require('../errors/auth-err');
 const EmailError = require('../errors/email-err');
 
-//const { NODE_ENV, JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.createUser = async (req, res, next) => {
   const {
@@ -87,8 +87,8 @@ module.exports.login = async (req, res, next) => {
     if (!userValid) {
       return next(new AuthError('Неправильные почта или пароль'));
     }
-    //const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-    const token = jwt.sign({ _id: user._id }, process.env['JWT.SECRET']);
+    const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    //const token = jwt.sign({ _id: user._id }, process.env['JWT.SECRET']);
 
     res.cookie('jwt', token, {
       httpOnly: true,
