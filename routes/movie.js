@@ -7,6 +7,8 @@ const {
   deleteMovie,
 } = require('../controllers/movie');
 
+const url = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
 movieRoutes.get('/movies', express.json(), getMovies);
 
 movieRoutes.post('/movies', express.json(), celebrate({
@@ -16,9 +18,9 @@ movieRoutes.post('/movies', express.json(), celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
-    trailerLink: Joi.string().required(),
-    thumbnail: Joi.string().required(),
+    image: Joi.string().required().regex(url),
+    trailerLink: Joi.string().required().regex(url),
+    thumbnail: Joi.string().required().regex(url),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     movieId: Joi.number().required(),
