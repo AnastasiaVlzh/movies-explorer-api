@@ -88,7 +88,6 @@ module.exports.login = async (req, res, next) => {
       return next(new AuthError('Неправильные почта или пароль'));
     }
     const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-    //const token = jwt.sign({ _id: user._id }, process.env['JWT.SECRET']);
 
     res.cookie('jwt', token, {
       httpOnly: true,
@@ -110,7 +109,7 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.logout = (req, res, next) => {
   try {
-    res.clearCookie('jwt', { sameSite: "None", secure: true });
+    res.clearCookie('jwt', { sameSite: 'None', secure: true });
     return res.status(200).send({ message: 'Выполнен выход' });
   } catch (err) {
     return next(new ServerError('Произошла ошибка'));

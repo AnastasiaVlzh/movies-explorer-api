@@ -3,12 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { celebrate, Joi, errors } = require('celebrate');
-const userRoutes = require('./routes/user');
-const movieRoutes = require('./routes/movie');
+const { errors } = require('celebrate');
 const {
-  login,
-  createUser,
   logout,
 } = require('./controllers/user');
 const { auth } = require('./middlewares/auth');
@@ -38,30 +34,7 @@ app.use(requestLogger);
 
 app.get('/logout', logout);
 
-app.post('/signin', express.json(), celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.post('/signup', express.json(), celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi
-      .string()
-      // eslint-disable-next-line no-useless-escape
-      .regex(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-
 app.use(auth);
-
-app.use(userRoutes);
-app.use(movieRoutes);
 
 app.all('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
