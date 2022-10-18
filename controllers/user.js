@@ -71,8 +71,9 @@ module.exports.updateUser = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return next(new BadRequestError('Некорректные данные пользователя'));
-    }
-    return next(new ServerError('Произошла ошибка'));
+    } if (err.code === 11000) {
+      return next(new EmailError('Адрес электронной почты принадлежит другому пользователю'));
+    } return next(new ServerError('Произошла ошибка'));
   }
 };
 
