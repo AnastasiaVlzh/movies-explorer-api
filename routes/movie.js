@@ -9,6 +9,9 @@ const {
   validationCreateMovie,
   validationDeleteMovie,
 } = require('../middlewares/validation');
+const { auth } = require('../middlewares/auth');
+
+movieRoutes.use(auth);
 
 movieRoutes.get('/movies', express.json(), getMovies);
 

@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { errors } = require('celebrate');
-const {
-  logout,
-} = require('./controllers/user');
-const { auth } = require('./middlewares/auth');
-const NotFoundError = require('./errors/not-found-err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const routes = require('./routes/index');
 
-const { PORT = 4000 } = process.env;
+const {
+  NODE_ENV,
+  PORT = 4000,
+  DB_URL,
+} = process.env;
 
 const app = express();
 
@@ -32,13 +32,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.get('/logout', logout);
-
-app.use(auth);
-
-app.all('*', (req, res, next) => {
-  next(new NotFoundError('Страница не найдена'));
-});
+app.use(routes);
 
 app.use(errorLogger);
 
@@ -54,7 +48,7 @@ app.use((err, req, res, next) => {
 
 async function main() {
   try {
-    await mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+    await mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/bitfilmsdb', {
       useNewUrlParser: true,
       useUnifiedTopology: false,
     });

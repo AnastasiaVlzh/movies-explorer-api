@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-req-err');
 const ServerError = require('../errors/server-err');
 const AuthError = require('../errors/auth-err');
-const EmailError = require('../errors/email-err');
+const ConflictError = require('../errors/conflict-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -28,7 +28,7 @@ module.exports.createUser = async (req, res, next) => {
       return next(new BadRequestError('Некорректные данные пользователя'));
     }
     if (err.code === 11000) {
-      return next(new EmailError('Пользователь с таким email уже зарегистрирован'));
+      return next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
     }
     return next(new ServerError('Произошла ошибка'));
   }
@@ -72,7 +72,7 @@ module.exports.updateUser = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new BadRequestError('Некорректные данные пользователя'));
     } if (err.code === 11000) {
-      return next(new EmailError('Адрес электронной почты принадлежит другому пользователю'));
+      return next(new ConflictError('Адрес электронной почты принадлежит другому пользователю'));
     } return next(new ServerError('Произошла ошибка'));
   }
 };
@@ -100,13 +100,6 @@ module.exports.login = async (req, res, next) => {
     return next(new ServerError('Произошла ошибка'));
   }
 };
-
-// module.exports.logout = (req, res) => {
-//   res.clearCookie('jwt');
-//   res.send({
-//     status: 'Signed out',
-//   });
-// };
 
 module.exports.logout = (req, res, next) => {
   try {
