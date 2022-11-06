@@ -21,6 +21,7 @@ const ALLOW_ORIGIN = [
   'http://localhost:4000',
   'http://api.anastasiavlzh-diploma.nomoredomains.icu',
   'https://api.anastasiavlzh-diploma.nomoredomains.icu',
+  'http://localhost:3000',
 ];
 
 app.use(
