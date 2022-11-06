@@ -17,13 +17,13 @@ const {
 
 const app = express();
 
-const ALLOW_ORIGIN = [
-  'http://localhost:3000',
-];
+// const ALLOW_ORIGIN = [
+//   'http://localhost:3000',
+// ];
 
 app.use(
   cors({
-    origin: ALLOW_ORIGIN,
+    origin: ['http://localhost:3000'],
     credentials: true,
   }),
 );
