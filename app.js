@@ -23,7 +23,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://anastasiavlzh-diploma.nomoredomains.icu'],
+    origin: ['https://anastasiavlzh-diploma.nomoredomains.icu'],
     credentials: true,
   }),
 );
